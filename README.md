@@ -1,23 +1,24 @@
-# Nvim-material-icon
+# Nvim-material-icon-v3
 
-## 291 file types supported
+An improved and fixed version of
+[nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons),
+[nvim-material-icon](https://github.com/DaikyXendo/nvim-material-icon)
 
-## 🎉🎉 Big update! Fix icon, color and add more file types supported
+In NerdFont v3, the `mdi` prefix glyphs have been removed and the `md` prefix is
+used instead, resulting in a signficant change in codepoints.
 
-An improved version of [nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons)
+Therefore, if you update NerdFont with the existing plugin, a lot of tofu will
+be displayed.
 
-## Image
+This is a modified version to display these icons correctly.
 
-![image](https://user-images.githubusercontent.com/46809008/201246284-316406cb-251c-484a-8c61-1d3f9390fdcb.png)
-
-
-## Warning ⚠️⚠️
-
-You need [DaikyXendo/nvim-tree.lua](https://github.com/DaikyXendo/nvim-tree.lua) instead of [nvim-tree/nvim-tree.lua](https://github.com/nvim-tree/nvim-tree.lua)
+If you are still using NerdFont v2, you do not need to install this plugin.
 
 ## Override to match with other plugins (thanks [dailoi282702](https://github.com/dailoi280702))
 
-Some plugins are associated with nvim-web-devicons such as [bufferline.nvim](https://github.com/akinsho/bufferline.nvim). You can use below way to override nvim-material-icon over nim-web-devicons
+Some plugins are associated with nvim-web-devicons such as
+[bufferline.nvim](https://github.com/akinsho/bufferline.nvim). You can use below
+way to override nvim-material-icon over nim-web-devicons
 
 ```lua
 local web_devicons_ok, web_devicons = pcall(require, "nvim-web-devicons")
@@ -37,28 +38,44 @@ web_devicons.setup({
 
 ## Requirements
 
--   [Nerd fonts](https://www.nerdfonts.com/)
+- [Nerd fonts](https://www.nerdfonts.com/)
 
 ## Installation
 
 ```vim
-Plug 'DaikyXendo/nvim-material-icon'
+Plug 'Allianaab2m/nvim-material-icon-v3'
 ```
 
 or with [packer.nvim](https://github.com/wbthomason/packer.nvim)
 
 ```lua
-use 'DaikyXendo/nvim-material-icon'
+use 'Allianaab2m/nvim-material-icon-v3'
+```
+
+or with [lazy.nvim](https://github.com/folke/lazy.nvim)
+
+```lua
+{
+    "nvim-tree/nvim-web-devicons",
+    event = { "VeryLazy" },
+    dependencies = {
+        "Allianaab2m/nvim-material-icon-v3",
+    },
+    config = function()
+        require("nvim-web-devicons").setup({
+            override = require("nvim-material-icon").get_icons()
+        })
+    end
+}
 ```
 
 ## Usage
 
 ### Setup
 
-This adds all the highlight groups for the devicons
-i.e. it calls `vim.api.nvim_set_hl` for all icons
-this might need to be re-called in a `Colorscheme` to re-apply cleared highlights
-if the color scheme changes
+This adds all the highlight groups for the devicons i.e. it calls
+`vim.api.nvim_set_hl` for all icons this might need to be re-called in a
+`Colorscheme` to re-apply cleared highlights if the color scheme changes
 
 ```lua
 require'nvim-material-icon'.setup {
@@ -84,18 +101,18 @@ require'nvim-material-icon'.setup {
 
 ### Get Icon
 
-Get the icon for a given file by passing in the `name`, the `extension` and an _optional_ options `table`.
-The name is passed in to check for an exact match e.g. `.bashrc` if there is no exact name match the extension
-is used. Calls `.setup()` if it hasn't already ran.
+Get the icon for a given file by passing in the `name`, the `extension` and an
+_optional_ options `table`. The name is passed in to check for an exact match
+e.g. `.bashrc` if there is no exact name match the extension is used. Calls
+`.setup()` if it hasn't already ran.
 
 ```lua
 require'nvim-material-icon'.get_icon(filename, extension, options)
 ```
 
-The optional `options` argument can used to change how the plugin works the keys include
-`default = <boolean>`. If the default key is set to true this function will return a default
-if there is no matching icon
-e.g.
+The optional `options` argument can used to change how the plugin works the keys
+include `default = <boolean>`. If the default key is set to true this function
+will return a default if there is no matching icon e.g.
 
 ```lua
 require'nvim-material-icon'.get_icon(filename, extension, { default = true })
@@ -110,9 +127,9 @@ require'nvim-material-icon'.has_loaded()
 ### Get icon and color code
 
 `get_icon_color` differs from `get_icon` only in the second return value.
-`get_icon_cterm_color` returns cterm color instead of gui color
-`get_icon` returns icon and highlight name.
-If you want to get color code, you can use this function.
+`get_icon_cterm_color` returns cterm color instead of gui color `get_icon`
+returns icon and highlight name. If you want to get color code, you can use this
+function.
 
 ```lua
 local icon, color = require'nvim-material-icon'.get_icon_color("init.lua", "lua")
@@ -122,13 +139,15 @@ assert(color == "#51a0cf")
 
 ### Get all icons
 
-It is possible to get all of the registered icons with the `get_icons()` function:
+It is possible to get all of the registered icons with the `get_icons()`
+function:
 
 ```lua
 require'nvim-material-icon'.get_icons()
 ```
 
-This can be useful for debugging purposes or for creating custom highlights for each icon.
+This can be useful for debugging purposes or for creating custom highlights for
+each icon.
 
 ### Set an icon
 
@@ -145,7 +164,8 @@ require("nvim-material-icon").set_icon {
 }
 ```
 
-You can override the default icon with the `set_default_icon(icon, color)` function:
+You can override the default icon with the `set_default_icon(icon, color)`
+function:
 
 ```lua
 require("nvim-material-icon").set_default_icon('', '#6d8086')
@@ -153,7 +173,8 @@ require("nvim-material-icon").set_default_icon('', '#6d8086')
 
 ### Getting icons by filetype
 
-You can get the icon and colors associated with a filetype using the `by_filetype` functions:
+You can get the icon and colors associated with a filetype using the
+`by_filetype` functions:
 
 ```lua
 require("nvim-material-icon").get_icon_by_filetype(filetype, opts)
@@ -162,6 +183,8 @@ require("nvim-material-icon").get_icon_color_by_filetype(filetype, opts)
 require("nvim-material-icon").get_icon_cterm_color_by_filetype(filetype, opts)
 ```
 
-These functions are the same as their counterparts without the `_by_filetype` suffix, but they take a filetype instead of a name/extension.
+These functions are the same as their counterparts without the `_by_filetype`
+suffix, but they take a filetype instead of a name/extension.
 
-You can also use `get_icon_name_by_filetype(filetype)` to get the icon name associated with the filetype.
+You can also use `get_icon_name_by_filetype(filetype)` to get the icon name
+associated with the filetype.
